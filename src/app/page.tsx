@@ -22,7 +22,7 @@ function TripsScreen() {
         </div>
         <button
           type="button"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-all hover:bg-brand-strong hover:shadow-[var(--shadow-md)] active:scale-[0.98]"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-(--shadow-sm) transition-all hover:bg-brand-strong hover:shadow-(--shadow-md) active:scale-[0.98]"
         >
           <PlusIcon />
           New Trip
@@ -30,7 +30,7 @@ function TripsScreen() {
       </header>
 
       {/* Empty state placeholder */}
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-(--border) bg-card px-6 py-20 text-center shadow-[var(--shadow-xs)]">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-(--border) bg-card px-6 py-20 text-center shadow-(--shadow-xs)">
         <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-light text-brand-strong">
           <MapIcon />
         </div>
@@ -41,7 +41,7 @@ function TripsScreen() {
         </p>
         <button
           type="button"
-          className="mt-6 inline-flex items-center gap-2 rounded-xl border border-(--border) bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-[var(--shadow-xs)] transition-colors hover:border-brand/30 hover:bg-brand-light/40"
+          className="mt-6 inline-flex items-center gap-2 rounded-xl border border-(--border) bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-(--shadow-xs) transition-colors hover:border-brand/30 hover:bg-brand-light/40"
         >
           <PlusIcon />
           Create your first trip
@@ -84,7 +84,7 @@ function TripCard({
   accent: string;
 }) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-(--border) bg-card shadow-[var(--shadow-xs)] transition-all hover:border-brand/20 hover:shadow-[var(--shadow-md)]">
+    <article className="group overflow-hidden rounded-2xl border border-(--border) bg-card shadow-(--shadow-xs) transition-all hover:border-brand/20 hover:shadow-(--shadow-md)">
       <div className={`h-24 bg-linear-to-br ${accent}`} />
       <div className="p-4">
         <h3 className="font-semibold tracking-tight text-foreground">{title}</h3>
