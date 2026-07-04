@@ -85,11 +85,11 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
 
   return (
     <div className="w-full max-w-md">
-      <div className="rounded-3xl border border-(--border) bg-card/80 p-6 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.35)] backdrop-blur-xl sm:p-8">
+      <div className="rounded-2xl border border-(--border) bg-card p-6 shadow-[var(--shadow-md)] sm:p-8">
         {/* Tabs */}
-        <div className="relative mb-8 grid grid-cols-2 rounded-2xl bg-foreground/5 p-1 text-sm font-medium">
+        <div className="relative mb-8 grid grid-cols-2 rounded-xl bg-surface p-1 text-sm font-medium">
           <span
-            className="absolute inset-y-1 w-[calc(50%-0.25rem)] rounded-xl bg-card shadow-sm ring-1 ring-(--border) transition-transform duration-300 ease-out"
+            className="absolute inset-y-1 w-[calc(50%-0.25rem)] rounded-lg bg-card shadow-[var(--shadow-xs)] ring-1 ring-(--border) transition-transform duration-300 ease-out"
             style={{ transform: mode === "login" ? "translateX(0.25rem)" : "translateX(calc(100% + 0.25rem))" }}
             aria-hidden
           />
@@ -193,13 +193,13 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
             )}
 
             {(error || passwordError) && (
-              <p className="rounded-lg bg-red-500/10 px-3 py-2 text-xs font-medium text-red-600 dark:text-red-400">
+              <p className="rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 ring-1 ring-red-100">
                 {error || passwordError}
               </p>
             )}
 
             {notice && (
-              <p className="rounded-lg bg-brand/10 px-3 py-2 text-xs font-medium text-brand-strong">
+              <p className="rounded-lg bg-brand-light/60 px-3 py-2 text-xs font-medium text-brand-strong ring-1 ring-brand/15">
                 {notice}
               </p>
             )}
@@ -207,7 +207,7 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full overflow-hidden rounded-xl bg-linear-to-r from-brand-strong to-brand-2 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:shadow-xl hover:shadow-brand/30 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-semibold cursor-pointer text-white shadow-[var(--shadow-sm)] transition hover:bg-brand-strong hover:shadow-[var(--shadow-md)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}
             </button>
@@ -221,7 +221,7 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
 
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-(--border) bg-card px-4 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5"
+            className="flex w-full items-center cursor-pointer justify-center gap-3 rounded-xl border border-(--border) bg-card px-4 py-3 text-sm font-medium text-foreground shadow-[var(--shadow-xs)] transition hover:bg-surface"
             onClick={signInWithGoogle}
           >
             <GoogleIcon />
@@ -260,7 +260,7 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
 }
 
 const inputClass =
-  "w-full rounded-xl border border-(--border) bg-card px-3.5 py-2.5 text-sm outline-none transition placeholder:text-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20";
+  "w-full rounded-xl border border-(--border) bg-card px-3.5 py-2.5 text-sm outline-none shadow-[var(--shadow-xs)] transition placeholder:text-muted/50 focus:border-brand focus:ring-2 focus:ring-brand/15";
 
 function Field({
   label,

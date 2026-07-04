@@ -21,7 +21,7 @@ const Nav = () => {
 
   useEffect(() => {
     async function getProfile() {
-      if (!user?.id) {
+      if (!user?.user.id) {
         setProfile(null)
         return
       }
@@ -30,7 +30,7 @@ const Nav = () => {
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user.id)
+        .eq("id", user.user.id)
         .single()
 
       console.log("data", data);
@@ -43,7 +43,7 @@ const Nav = () => {
     }
 
     getProfile()
-  }, [user?.id, supabase])
+  }, [user?.user.id, supabase])
   
   return (
     <>
@@ -54,7 +54,7 @@ const Nav = () => {
         {user ? (
           <div>
             <button onClick={signOut}>Sign Out</button>
-            <p>{user?.id}</p>
+            <p>{user?.user.id}</p>
             <p>{profile?.full_name}</p>
           </div>
         ) : (
