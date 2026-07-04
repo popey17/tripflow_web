@@ -1,4 +1,4 @@
-import AuthShell from "@/app/components/AuthShell";
+import AuthShell from "@/app/components/auth/AuthShell";
 
 type AuthPageProps = {
   searchParams: Promise<{

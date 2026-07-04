@@ -59,7 +59,7 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { name } },
+        options: { data: { full_name: name.trim() } },
       });
       setLoading(false);
       if (error) {
@@ -67,6 +67,19 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
         return;
       }
       setNotice("Account created! Check your inbox to confirm your email.");
+    }
+  }
+  
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+
+    if (error) {
+      console.error(error)
     }
   }
 
@@ -122,6 +135,8 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
                   placeholder="Your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
+                  minLength={1}
                   className={inputClass}
                 />
               </Field>
@@ -207,6 +222,7 @@ export default function AuthForm({ initialMode = "login" }: { initialMode?: Mode
           <button
             type="button"
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-(--border) bg-card px-4 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5"
+            onClick={signInWithGoogle}
           >
             <GoogleIcon />
             Continue with Google
