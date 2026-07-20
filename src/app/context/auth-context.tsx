@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useEffect, useState, useContext } from "react"
+import { createContext, useEffect, useState, useContext, useCallback } from "react"
 import { Session, User } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -16,7 +16,8 @@ interface AppUser {
 interface AuthContextType {
   user: AppUser | null,
   loading: boolean,
-  signOut: () => Promise<void>
+  signOut: () => Promise<void>,
+  refreshUser: () => Promise<void>,
 }
 
 const AuthContext = createContext< AuthContextType | undefined>(undefined);
@@ -28,28 +29,35 @@ export function AuthProvider({children}:{children:React.ReactNode}) {
   const supabase = createClient();
   const router = useRouter();
 
-  
-  useEffect(()=> {
-    async function loadUser(session: Session | null) {
-      if (!session?.user) {
-        setUser(null);
-        return;
-      }
-      console.log(session.user);
-      
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("full_name, avatar_url")
-        .eq("id", session.user.id)
-        .maybeSingle();
-      if (error) console.error("error getting profile", error);
-
-      setUser({
-        user: session.user,
-        profile: profile ?? null,
-      });
+  const loadUser = useCallback(async (session: Session | null)=>{
+    if (!session?.user) {
+      setUser(null);
+      return;
     }
     
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("full_name, avatar_url")
+      .eq("id", session.user.id)
+      .maybeSingle();
+    if (error) console.error("error getting profile", error);
+
+    setUser({
+      user: session.user,
+      profile: profile ?? null,
+    });
+  },[supabase])
+
+  async function refreshUser() {
+    const {data:{session}} = await supabase.auth.getSession();
+    if (session) {
+      void loadUser(session);
+    }
+  }
+
+
+  
+  useEffect(()=> {
     async function checkUserSession() {
       const {data:{session}} = await supabase.auth.getSession();
       loadUser(session);
@@ -70,7 +78,7 @@ export function AuthProvider({children}:{children:React.ReactNode}) {
       subscription.unsubscribe();
     };
 
-  },[supabase]) 
+  },[supabase, loadUser]) 
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -79,7 +87,7 @@ export function AuthProvider({children}:{children:React.ReactNode}) {
   }
 
 
-  return <AuthContext.Provider value={{user, loading, signOut}}>
+  return <AuthContext.Provider value={{user, loading, signOut, refreshUser}}>
     {children}
   </AuthContext.Provider>
 

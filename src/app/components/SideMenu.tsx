@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/auth-context";
+import Image from "next/image";
 
 export default function SideMenu() {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -62,13 +63,14 @@ export default function SideMenu() {
             </div>
             <ul className="p-1.5">
               <li>
-                <button
-                  type="button"
+                <Link
+                  href="/profile"
+                  onClick={() => setProfileOpen(false)}
                   className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-surface"
                 >
                   <UserIcon />
                   Profile
-                </button>
+                </Link>
               </li>
               <li>
                 <button
@@ -95,14 +97,27 @@ export default function SideMenu() {
               : "text-muted hover:bg-surface hover:text-foreground"
           }`}
         >
-          <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-brand-2/80 to-brand text-[10px] font-bold text-white ring-2 ring-card md:h-8 md:w-8 md:text-xs">
-            JD
-          </span>
+          {
+            user?.profile?.avatar_url ? (
+              <Image className="rounded-full object-cover w-7 h-7" src={user.profile.avatar_url} alt="Profile" width={32} height={32} />
+            ) : (
+              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-brand-2/80 to-brand text-[10px] font-bold text-white ring-2 ring-card md:h-8 md:w-8 md:text-xs">
+                {getInitials(user?.profile?.full_name ?? user?.user?.email ?? "")}
+              </span>
+            )
+          }
           <span className="text-[10px] font-medium">Profile</span>
         </button>
       </div>
     </nav>
   );
+}
+
+function getInitials(value: string) {
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
 function CompassIcon() {
