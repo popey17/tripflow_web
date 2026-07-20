@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import AppShell from "./components/AppShell";
+import NewTripModal from "./components/NewTripModal";
 
 export default function Home() {
   return (
@@ -9,12 +13,14 @@ export default function Home() {
 }
 
 function TripsScreen() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <div className="mx-auto  animate-fade-in-up">
+    <div className="mx-auto animate-fade-in-up">
       <header className="mb-8 flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            {new Date().getHours() }
+            {new Date().getHours()}
           </h1>
           <p className="mt-1 text-sm text-muted">
             Plan every adventure, day by day.
@@ -22,6 +28,7 @@ function TripsScreen() {
         </div>
         <button
           type="button"
+          onClick={() => setModalOpen(true)}
           className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-(--shadow-sm) transition-all hover:bg-brand-strong hover:shadow-(--shadow-md) active:scale-[0.98]"
         >
           <PlusIcon />
@@ -41,6 +48,7 @@ function TripsScreen() {
         </p>
         <button
           type="button"
+          onClick={() => setModalOpen(true)}
           className="mt-6 inline-flex items-center gap-2 rounded-xl border border-(--border) bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-(--shadow-xs) transition-colors hover:border-brand/30 hover:bg-brand-light/40"
         >
           <PlusIcon />
@@ -53,7 +61,7 @@ function TripsScreen() {
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">
           Preview
         </p>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <TripCard
             title="Tokyo Adventure"
             dates="Mar 12 – Mar 20, 2026"
@@ -68,6 +76,8 @@ function TripsScreen() {
           />
         </div>
       </div>
+
+      <NewTripModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }
